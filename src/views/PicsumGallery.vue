@@ -23,7 +23,7 @@
         v-if="isLoading"
         class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 m-3"
       >
-        <div v-for="image in 100" :key="image.id" role="status" class="animate-pulse">
+        <div v-for="image in 100" :key="image" role="status" class="animate-pulse">
           <div class="flex h-48 items-center justify-center rounded bg-gray-300 dark:bg-gray-700">
             <PgIcon iconName="ImageSkeleton" />
           </div>
@@ -37,7 +37,7 @@
           v-for="image in picsumImageList"
           :key="image.id"
           class="relative group overflow-hidden cursor-pointer"
-          @click="handleViewDetail(image.id)"
+          @click="handleViewDetail(Number(image.id))"
         >
           <img
             :src="image.download_url"

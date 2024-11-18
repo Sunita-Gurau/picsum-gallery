@@ -1,9 +1,12 @@
 <template>
   <main>
     <div class="w-full h-screen">
-      <h1 class="text-6xl font-extrabold text-gray-800 animate-header text-center mt-4">
+      <h1
+        class="text-4xl sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-extrabold text-gray-800 animate-header text-center mt-4"
+      >
         Picsum Gallery
       </h1>
+
       <div class="max-w-[100px] mx-4 flex justify-center items-center">
         <p class="mt-2 pr-2">Limit:</p>
         <PgSelect

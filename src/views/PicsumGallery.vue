@@ -1,13 +1,14 @@
 <template>
   <main>
     <div class="w-full h-screen">
-      <h1>Picsum Gallery</h1>
-      <div class="max-w-[80px]">
+      <h1 class="text-6xl font-extrabold text-gray-800 animate-header text-center mt-4">
+        Picsum Gallery
+      </h1>
+      <div class="max-w-[100px] mx-4 flex justify-center items-center">
+        <p class="mt-2 pr-2">Limit:</p>
         <PgSelect
           v-model="filterParams.limit"
-          placeholder="Status"
           name="pageSize"
-          gap="mt-2"
           height="h-7"
           selectType="normalSelect"
           optionSelected="objectLabelEmitted"
@@ -15,8 +16,28 @@
           @selected-option="handlePageSizeFilter"
         />
       </div>
-
       <div
+        v-if="isLoading"
+        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 m-3"
+      >
+        <div v-for="image in 100" :key="image.id" role="status" class="animate-pulse">
+          <div class="flex h-48 items-center justify-center rounded bg-gray-300 dark:bg-gray-700">
+            <svg
+              class="h-12 w-12 text-gray-200"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              fill="black"
+              viewBox="0 0 640 512"
+            >
+              <path
+                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="picsumImageList.length"
         class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 m-3"
       >
         <figure
@@ -28,6 +49,7 @@
           <img
             :src="image.download_url"
             :alt="`Image by ${image.author}`"
+            loading="lazy"
             class="w-full h-full group-hover:scale-110 group transition-all duration-500"
           />
           <figcaption
@@ -39,7 +61,13 @@
           </figcaption>
         </figure>
       </div>
-      <div class="flex justify-center items-center">
+      <div v-if="!picsumImageList.length" class="h-80 flex justify-center items-center">
+        <div>
+          <PgIcon iconName="NoData" svgFill="stroke-gray-400" />
+          <p class="text-base text-gray-500 my-4">No data Found.</p>
+        </div>
+      </div>
+      <div v-if="picsumImageList.length" class="flex justify-center items-center">
         <PaginationBar
           class="py-6"
           :total-items="totalImages"
@@ -57,6 +85,7 @@ import { getPicsumImageList } from '../api/picsumGalleryApi'
 import { makeApiRequest } from '../api/apiHelper'
 import PaginationBar from '@/components/PaginationBar.vue'
 import PgSelect from '@/components/PgSelect.vue'
+import PgIcon from '@/components/PgIcon.vue'
 import { useRoute, useRouter } from 'vue-router'
 
 export interface PicsumImageType {
@@ -86,6 +115,8 @@ const pageSizeOptions = ref<PageSizeOption[]>([
   { id: 400, label: '400' },
   { id: 500, label: '500' },
 ])
+const isLoading = ref<boolean>(false)
+
 const picsumImageList = ref<PicsumImageType[]>([])
 const filterParams = ref<filterParamsType>({
   limit: 100,
@@ -108,6 +139,7 @@ const handleViewDetail = (imageId: number) => {
 }
 
 const fetchPicsumImageList = () => {
+  isLoading.value = true
   const params = {
     page: filterParams.value.page,
     limit: filterParams.value.limit,
@@ -118,6 +150,9 @@ const fetchPicsumImageList = () => {
     })
     .catch((error) => {
       console.log(error, 'error')
+    })
+    .finally(() => {
+      isLoading.value = false
     })
 }
 
@@ -137,11 +172,8 @@ watchEffect(() => {
   if ($route.query.page && $route.query.limit) {
     const pageNumber = Number($route.query.page)
     const pageSize = Number($route.query.limit)
-
-    if (!isNaN(pageNumber) && !isNaN(pageSize)) {
-      filterParams.value.page = pageNumber
-      filterParams.value.limit = pageSize
-    }
+    filterParams.value.page = pageNumber
+    filterParams.value.limit = pageSize
   } else {
     $router.push({
       name: 'picsumGallery',

@@ -1,39 +1,58 @@
-# picsum-gallery
+# Picsum Gallery
 
-This template should help get you started developing with Vue 3 in Vite.
+This is a Vue 3 application built with Vite, allowing users to view a gallery of images fetched from the [Picsum API](https://picsum.photos/v2/list).
 
-## Recommended IDE Setup
+## Features:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Image gallery displaying photos from Picsum API.
+- Supports pagination.
+- Image details page with description, author
 
 ## Project Setup
+
+### 1. Clone the Repository
+
+```sh
+git clone <https://github.com/Sunita-Gurau/picsum-gallery.git>
+cd picsum-gallery
+```
+
+### 2.Install Dependencies
+
+Install the required dependencies using npm :
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 3.Development Server
+
+To start the development server with hot-reloading, run:
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 4.Build for Production
+
+To create an optimized production build, run:
 
 ```sh
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### 5.Linting
+
+To run ESLint and fix any issues, use the following command:
 
 ```sh
 npm run lint
+```
+
+### 6.Format Code
+
+To automatically format the code according to the defined style, run:
+
+```sh
+npm run format
 ```

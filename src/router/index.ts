@@ -13,6 +13,12 @@ const router = createRouter({
       name: 'picsumGallery',
       component: PicsumGallery,
     },
+    {
+      path: '/image/:imageId',
+      name: 'viewImageDetail',
+      component: () => import('@/views/ImageDetail.vue'),
+      props: true,
+    },
   ],
 })
 

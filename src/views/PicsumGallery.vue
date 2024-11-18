@@ -17,12 +17,13 @@
       </div>
 
       <div
-        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
+        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 m-3"
       >
         <figure
           v-for="image in picsumImageList"
           :key="image.id"
           class="relative group overflow-hidden cursor-pointer"
+          @click="handleViewDetail(image.id)"
         >
           <img
             :src="image.download_url"
@@ -58,7 +59,7 @@ import PaginationBar from '@/components/PaginationBar.vue'
 import PgSelect from '@/components/PgSelect.vue'
 import { useRoute, useRouter } from 'vue-router'
 
-interface PicsumImageType {
+export interface PicsumImageType {
   id: string
   author: string
   width: number
@@ -98,6 +99,12 @@ const handlePageSizeFilter = (option: { id: number; label: string }) => {
 
 const handlePageNumber = (page: number) => {
   filterParams.value.page = page
+}
+const handleViewDetail = (imageId: number) => {
+  $router.push({
+    name: 'viewImageDetail',
+    params: { imageId: imageId },
+  })
 }
 
 const fetchPicsumImageList = () => {
